@@ -3,7 +3,7 @@
 #include <filesystem>
 
 std::vector<cv::Vec6f> delaunay_triangulation(std::vector<cv::Point2f> points) {
-    cv::Rect rect(0, 0, 255, 255);
+    cv::Rect rect(0, 0, 2550, 2550);
     cv::Subdiv2D subdiv(rect);
 
     for (auto &p : points) {
@@ -12,37 +12,47 @@ std::vector<cv::Vec6f> delaunay_triangulation(std::vector<cv::Point2f> points) {
 
     std::vector<cv::Vec6f> triangles;
     subdiv.getTriangleList(triangles);
+//    for (const auto& triangle : triangles) {
+//        std::cout << "[";
+//        for (int i = 0; i < 6; ++i) {
+//            std::cout << triangle[i];
+//            if (i < 5) {
+//                std::cout << ", ";
+//            }
+//        }
+//        std::cout << "]\n";
+//    }
 
     return triangles;
 }
 
 int main() {
-    std::vector<cv::Point2f> a_n = {{0,   0},
-                                    {0,   254},
-                                    {254, 0},
-                                    {254, 254},
-                                    {44,  34},
-                                    {151, 37},
-                                    {91,  101},
-                                    {217, 104},
-                                    {35,  165},
-                                    {162, 167}};
-    std::vector<cv::Point2f> a_k = {{0,   0},
-                                    {0,   254},
-                                    {254, 0},
-                                    {254, 254},
-                                    {51,  34},
-                                    {158, 28},
-                                    {98,  77},
-                                    {215, 77},
-                                    {47,  166},
-                                    {179, 157}};
+    float width = 255.0f;
+    float height = 255.0f;
+
+
+    std::vector<cv::Point2f> a_n = {
+                                    {width - 1 + 100, 0},
+                                    {width - 1 + 100, height - 1 +100}
+                                    };
+    std::vector<cv::Point2f> a_k = {
+            {width - 1 + 100, 0},
+            {width - 1 + 100, height - 1 +100}
+    };
+
+    std::vector<cv::Point2f> points_n = {{240,   100},
+
+    };
+    std::vector<cv::Point2f> points_k = {{240,   100},
+
+    };
+    a_n.insert(a_n.end(), points_n.begin(), points_n.end());
+    a_k.insert(a_k.end(), points_k.begin(), points_k.end());
+
+
 
     auto triangulation_n = delaunay_triangulation(a_n);
-    std::filesystem::path currentDir = std::filesystem::current_path();
 
-    // Выводим текущую директорию на экран
-    std::cout << "Current Directory: " << currentDir << std::endl;
 
 
     cv::Mat image = cv::imread("../grid.png");
